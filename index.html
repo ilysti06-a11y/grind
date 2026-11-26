@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Grind</title>
+<meta name="theme-color" content="#03050a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Grind">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#03050a; --cell:#0b1122; --cell2:#0e1630; --line:#1b2742;
+  --fg:#e8eefc; --muted:#7f8db0;
+  --muscu:#4f8cff; --cardio:#ff5a87; --revi:#36e0a8; --gold:#ffc857;
+  --display:"Sora","Inter",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg)}
+body{color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(700px 420px at 50% -120px,#0e1c3d 0%,transparent 70%) var(--bg) no-repeat;
+  padding:calc(env(safe-area-inset-top,0px) + 18px) max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 22px) max(18px,env(safe-area-inset-left,0px));
+  user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+.app{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.brand{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.03em;line-height:1}
+.brand small{display:block;font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.streak{display:flex;align-items:center;gap:8px;background:#0c142a;border:1px solid var(--line);border-radius:14px;padding:8px 12px}
+.streak b{font-family:var(--display);font-size:22px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+.streak span{font-size:11px;color:var(--muted);line-height:1.25}
+
+.month{display:flex;justify-content:space-between;align-items:center}
+.month h2{font-family:var(--display);font-size:19px;margin:0;text-transform:capitalize;letter-spacing:-.01em}
+.month .sub{font-size:12px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
+.nav{display:flex;gap:6px}
+.nav button{width:36px;height:36px;border-radius:12px;background:var(--cell);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.nav button:disabled{opacity:.3}
+.nav svg{width:16px;height:16px}
+
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.cal .h{font-size:10.5px;color:var(--muted);text-align:center;padding-bottom:2px}
+.day{aspect-ratio:1;border-radius:11px;background:var(--cell);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:background .2s, transform .15s}
+.day .num{position:absolute;top:4px;left:6px;font-size:9.5px;color:#4a5878;font-variant-numeric:tabular-nums}
+.day .dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;max-width:80%;margin-top:6px}
+.day em{width:8px;height:8px;border-radius:50%;display:block}
+.day em.m{background:var(--muscu);box-shadow:0 0 7px var(--muscu)}
+.day em.c{background:var(--cardio);box-shadow:0 0 7px var(--cardio)}
+.day em.r{background:var(--revi);box-shadow:0 0 7px var(--revi)}
+.day.full{background:radial-gradient(circle at 50% 60%, #15224a 0%, var(--cell) 75%)}
+.day.today .num{color:var(--fg);font-weight:600}
+.day.today{box-shadow:inset 0 0 0 1.5px #3a4d80}
+.day.sel{box-shadow:inset 0 0 0 2px var(--fg)}
+.day.future{opacity:.35}
+.day.blank{background:transparent}
+.day:active:not(.future){transform:scale(.94)}
+
+.legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);justify-content:center}
+.legend em{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:1px}
+
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px}
+.dayhead h3{margin:0;font-family:var(--display);font-size:16px;text-transform:capitalize}
+.dayhead button{font-size:12px;color:var(--muscu)}
+.checks{display:flex;flex-direction:column;gap:10px}
+.chk{--c:var(--muscu);display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:18px;background:var(--cell);border:1px solid var(--line);text-align:left;width:100%;position:relative;transition:border-color .3s, background .3s, transform .15s}
+.chk:active{transform:scale(.98)}
+.chk .dot{width:26px;height:26px;border-radius:50%;border:2px solid color-mix(in srgb,var(--c) 60%,transparent);flex:none;display:grid;place-items:center;transition:all .35s cubic-bezier(.34,1.56,.64,1)}
+.chk .dot svg{width:14px;height:14px;opacity:0;transition:opacity .2s;stroke:#04060c}
+.chk.on{border-color:color-mix(in srgb,var(--c) 50%,transparent);background:color-mix(in srgb,var(--c) 11%,var(--cell))}
+.chk.on .dot{background:var(--c);border-color:var(--c);box-shadow:0 0 16px var(--c);transform:scale(1.08)}
+.chk.on .dot svg{opacity:1}
+.chk b{font-weight:600;font-size:15px;display:block}
+.chk small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.chk .yn{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted);padding:5px 10px;border-radius:20px;background:#141d36}
+.chk.on .yn{color:#04120c;background:var(--c)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--cell);border-radius:14px;padding:10px 8px;text-align:center}
+.stat b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.stat span{font-size:10.5px;color:var(--muted)}
+
+.pop{position:fixed;border-radius:50%;pointer-events:none;z-index:50;animation:fly .9s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes fly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pop{display:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="top">
+    <div class="brand"><small id="todayLabel"></small>Grind</div>
+    <div class="streak" title="Jours d'affilée avec au moins une validation"><b id="streak">0</b><span>jours<br>d'affilée</span></div>
+  </div>
+
+  <section>
+    <div class="month">
+      <div><h2 id="monthTitle"></h2><div class="sub" id="monthSub"></div></div>
+      <div class="nav">
+        <button id="prev" aria-label="Mois précédent"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button id="next" aria-label="Mois suivant"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 3 5 5-5 5"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="cal" id="cal"></div>
+  <div class="legend"><span><em style="background:var(--muscu)"></em>Muscu</span><span><em style="background:var(--cardio)"></em>Cardio</span><span><em style="background:var(--revi)"></em>Révisions</span></div>
+
+  <div class="dayhead"><h3 id="dayTitle"></h3><button id="backToday" hidden>Revenir à aujourd'hui</button></div>
+  <div class="checks">
+    <button class="chk" style="--c:var(--muscu)" data-k="m"><span class="dot"><svg viewBox="0 0 16 16" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8.5 3 3 6-7"/></svg></span><span><b>Séance de muscu</b><small>Faite ?</small></span><span class="yn">Non</span></button>
+    <button class="chk" style="--c:var(--cardio)" data-k="c"><span class="dot"><svg viewBox="0 0 16 16" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8.5 3 3 6-7"/></svg></span><span><b>Cardio</b><small>Fait ?</small></span><span class="yn">Non</span></button>
+    <button class="chk" style="--c:var(--revi)" data-k="r"><span class="dot"><svg viewBox="0 0 16 16" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8.5 3 3 6-7"/></svg></span><span><b>Révisions</b><small>Satisfait de ta journée ?</small></span><span class="yn">Non</span></button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="sM" style="color:var(--muscu)">0</b><span>muscu ce mois</span></div>
+    <div class="stat"><b id="sC" style="color:var(--cardio)">0</b><span>cardio ce mois</span></div>
+    <div class="stat"><b id="sR" style="color:var(--revi)">0</b><span>révisions OK</span></div>
+  </div>
+</main>
+
+<script>
+const KEY='grind.v1', KINDS=['m','c','r'], COLORS={m:'#4f8cff',c:'#ff5a87',r:'#36e0a8'};
+let data={};
+try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){data={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
+
+const pad=n=>String(n).padStart(2,'0');
+const keyOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const has=(k,kind)=>!!(data[k]&&data[k][kind]);
+
+let view=today(); view.setDate(1);
+let sel=today();
+
+const $=id=>document.getElementById(id);
+const fmtMonth=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'});
+const fmtDay=new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+function streak(){
+  const d=today(); let n=0;
+  const any=k=>data[k]&&KINDS.some(x=>data[k][x]);
+  if(!any(keyOf(d))) d.setDate(d.getDate()-1);
+  while(any(keyOf(d))){n++;d.setDate(d.getDate()-1)}
+  return n;
+}
+
+function render(){
+  const t=today(), tk=keyOf(t), sk=keyOf(sel);
+  $('todayLabel').textContent=fmtDay.format(t);
+  $('monthTitle').textContent=fmtMonth.format(view);
+  $('streak').textContent=streak();
+
+  const cal=$('cal'); cal.innerHTML='';
+  ['L','M','M','J','V','S','D'].forEach(h=>cal.insertAdjacentHTML('beforeend',`<div class="h">${h}</div>`));
+  const y=view.getFullYear(), m=view.getMonth();
+  const offset=(new Date(y,m,1).getDay()+6)%7, days=new Date(y,m+1,0).getDate();
+  for(let i=0;i<offset;i++) cal.insertAdjacentHTML('beforeend','<div class="day blank"></div>');
+  let active=0, cnt={m:0,c:0,r:0}, past=0;
+  for(let d=1;d<=days;d++){
+    const date=new Date(y,m,d), k=keyOf(date), fut=date>t;
+    const on=KINDS.filter(x=>has(k,x));
+    on.forEach(x=>cnt[x]++); if(on.length) active++; if(!fut) past++;
+    const b=document.createElement('button');
+    b.className='day'+(k===tk?' today':'')+(k===sk?' sel':'')+(fut?' future':'')+(on.length===3?' full':'');
+    b.disabled=fut; b.dataset.k=k;
+    b.setAttribute('aria-label',fmtDay.format(date));
+    b.innerHTML=`<span class="num">${d}</span><span class="dots">${on.map(x=>`<em class="${x}"></em>`).join('')}</span>`;
+    b.onclick=()=>{sel=date;render()};
+    cal.appendChild(b);
+  }
+  $('monthSub').textContent=`${active} / ${past} jours actifs`;
+  $('sM').textContent=cnt.m; $('sC').textContent=cnt.c; $('sR').textContent=cnt.r;
+  $('next').disabled = y>t.getFullYear() || (y===t.getFullYear() && m>=t.getMonth());
+
+  $('dayTitle').textContent= sk===tk ? "Aujourd'hui" : fmtDay.format(sel);
+  $('backToday').hidden= sk===tk;
+  document.querySelectorAll('.chk').forEach(c=>{
+    const on=has(sk,c.dataset.k);
+    c.classList.toggle('on',on);
+    c.querySelector('.yn').textContent= on?'Oui':'Non';
+    c.setAttribute('aria-pressed',on);
+  });
+}
+
+function burst(el,color){
+  if(!el) return;
+  const r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(let i=0;i<16;i++){
+    const b=document.createElement('span'), sz=4+Math.random()*13, a=Math.random()*Math.PI*2, dist=40+Math.random()*80;
+    b.className='pop';
+    Object.assign(b.style,{width:sz+'px',height:sz+'px',left:cx-sz/2+'px',top:cy-sz/2+'px',background:`radial-gradient(circle at 30% 30%,#ffffff99,${color})`});
+    b.style.setProperty('--dx',Math.cos(a)*dist+'px'); b.style.setProperty('--dy',Math.sin(a)*dist-24+'px');
+    document.body.appendChild(b); setTimeout(()=>b.remove(),950);
+  }
+}
+
+document.querySelectorAll('.chk').forEach(c=>c.addEventListener('click',()=>{
+  const k=keyOf(sel), kind=c.dataset.k;
+  data[k]=data[k]||{};
+  data[k][kind]=!data[k][kind];
+  if(!data[k][kind]) delete data[k][kind];
+  if(!Object.keys(data[k]).length) delete data[k];
+  save();
+  const on=has(k,kind);
+  render();
+  if(on){
+    if(navigator.vibrate) navigator.vibrate(12);
+    burst(c.querySelector('.dot'),COLORS[kind]);
+    setTimeout(()=>burst(document.querySelector(`.day[data-k="${k}"]`),COLORS[kind]),140);
+  }
+}));
+$('prev').onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};
+$('next').onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
+$('backToday').onclick=()=>{sel=today();view=today();view.setDate(1);render()};
+
+// Revenir sur aujourd'hui quand l'appli se rouvre un autre jour
+let lastDay=keyOf(today());
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && keyOf(today())!==lastDay){
+    lastDay=keyOf(today()); sel=today(); view=today(); view.setDate(1); render();
+  }
+});
+
+render();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
