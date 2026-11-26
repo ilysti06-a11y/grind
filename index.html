@@ -19,7 +19,7 @@
   color-scheme: dark;
   --bg:#03050a; --cell:#0b1122; --cell2:#0e1630; --line:#1b2742;
   --fg:#e8eefc; --muted:#7f8db0;
-  --muscu:#4f8cff; --cardio:#ff5a87; --revi:#36e0a8; --gold:#ffc857;
+  --muscu:#2f5ed8; --cardio:#a3274a; --revi:#e6e8ee; --gold:#ffc857;
   --display:"Sora","Inter",system-ui,sans-serif;
   --body:"Inter",system-ui,-apple-system,sans-serif;
 }
@@ -129,7 +129,7 @@ button:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 </main>
 
 <script>
-const KEY='grind.v1', KINDS=['m','c','r'], COLORS={m:'#4f8cff',c:'#ff5a87',r:'#36e0a8'};
+const KEY='grind.v1', KINDS=['m','c','r'], COLORS={m:"#2f5ed8",c:"#a3274a",r:"#e6e8ee"};
 let data={};
 try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){data={}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
