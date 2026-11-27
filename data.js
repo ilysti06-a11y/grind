@@ -1,4 +1,4 @@
-// Données d'Ilyes : items du S1 (4e année), planning Hippocampus, Biopass S2.
+// Données d'Ilyes : items du S1 (4e année) et Biopass S2.
 // Repris du Google Sheet « Révisions S1 – Items à apprendre » (état au 27 nov 2026).
 
 // [numéro, intitulé, pages, lu, questions Hippocampus faites, note]
@@ -100,29 +100,6 @@ const MATIERES = [
     ]},
   ]},
 ];
-
-// Planning Hippocampus (lecture puis questions), « tout finir le dimanche 6 décembre ».
-// [jour, pages à lire, minutes d'ancrages, [[item, précision], ...]]
-const RC = 'Relire le collège', RF = 'Relire la fiche';
-const PLANNING = [
-  ['2026-11-22',89,30,[[343,RC],[240,RF],[244],[241],[71],[110]]],
-  ['2026-11-23',33,30,[[256],[24,RC],[92]]],
-  ['2026-11-24',22,30,[[35,RC],[43,RC],[335],[224],[254,RF]]],
-  ['2026-11-25',49,30,[[96],[342],[246]]],
-  ['2026-11-26',29,30,[[253,RF],[30],[37]]],
-  ['2026-11-27',42,30,[[105],[26],[42]]],
-  ['2026-11-28',72,30,[[300],[27,RF],[124],[103]]],
-  ['2026-11-29',89,30,[[255,RF],[299,'Partie 1 sur 2'],[312],[306]]],
-  ['2026-11-30',20,45,[[242],[223,RF],[25,RF],[23,RF]]],
-  ['2026-12-01',16,45,[[243],[222,RF],[40,RC],[31,RF]]],
-  ['2026-12-02',20,45,[[245],[251,RF],[41,RC],[33,RF]]],
-  ['2026-12-03',12,45,[[250,RC],[44],[29,RF],[38,RC]]],
-  ['2026-12-04',44,45,[[268],[252],[290]]],
-  ['2026-12-05',99,45,[[299,'Partie 2 sur 2'],[39,RC],[334]]],
-  ['2026-12-06',96,45,[[36,RF],[99],[93],[219]]],
-];
-const PLAN_END = '2026-12-06';
-const EXAMS = { '2027-01-07': 'Partiels (jour 1)', '2027-01-08': 'Partiels (jour 2)' };
 
 // Biopass S2 : f = parties de fiche (true = déjà faite proprement sur tablette)
 const S2 = [

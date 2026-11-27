@@ -43,39 +43,9 @@ button:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
 .big{font-family:var(--display);font-size:32px;font-weight:700;line-height:1}
 .big small{font-family:var(--body);font-size:12px;color:var(--mu);font-weight:700;display:block;margin-top:3px}
 
-/* ---- Aujourd'hui ---- */
-.days{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:2px calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:4px max(16px,env(safe-area-inset-left,0px))}
-.days::-webkit-scrollbar{display:none}
-.dy{flex:none;width:52px;padding:8px 0 7px;border-radius:15px;background:var(--card);border:1px solid var(--line);text-align:center;font-size:10.5px;color:var(--mu);font-weight:800}
-.dy b{display:block;font-size:17px;color:var(--tx);font-family:var(--display);line-height:1.2}
-.dy i{display:block;width:5px;height:5px;border-radius:50%;margin:3px auto 0}
-.dy.done i{background:var(--sun)}
-.dy.part i{background:#b9d3f7}
-.dy.today{border-color:var(--deep)}
-.dy.on{background:var(--deep);border-color:var(--deep);color:#fff}
-.dy.on b{color:#fff}
-.dy.off{opacity:.55}
-.dayprog{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
-.bar{flex:1;height:10px;border-radius:10px;background:var(--soft);overflow:hidden}
-.bar i{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,var(--deep),#7fb8f6);transition:width .5s cubic-bezier(.22,1,.36,1)}
-.dayprog span{font-size:12.5px;font-weight:800;color:var(--deep);font-variant-numeric:tabular-nums;white-space:nowrap}
-.task{--c:var(--deep);display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:left;width:100%}
+/* ---- Cases ---- */
 .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--c);flex:none;display:grid;place-items:center;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
 .ck svg{width:14px;height:14px;stroke:#fff;opacity:0}
-.task.on .ck{background:var(--c);transform:scale(1.06)}
-.task.on .ck svg{opacity:1}
-.task .t{font-size:13.5px;font-weight:700;line-height:1.3;min-width:0;flex:1}
-.task .t small{display:block;font-weight:600;color:var(--mu);font-size:11.5px;margin-top:2px}
-.task.on .t{opacity:.55}
-.task.on .t span{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--c) 60%,transparent)}
-.chips2{display:flex;gap:5px;flex:none}
-.tg{--c:var(--deep);font-size:10.5px;font-weight:800;padding:5px 7px;border-radius:9px;border:1.5px solid color-mix(in srgb,var(--c) 45%,transparent);color:var(--c);background:#fff;transition:all .25s}
-.tg.on{background:var(--c);border-color:var(--c);color:#fff}
-.late{background:#fff6dc;border:1px solid #f3dc9c;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
-.late .lh{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px;color:#6b4c00;width:100%;text-align:left}
-.late .lh span{font-size:12px;color:#a0802a}
-.late .lst{display:flex;flex-direction:column;gap:7px}
-.late .all{align-self:flex-start;font-size:12px;font-weight:800;color:#6b4c00;padding:7px 11px;border-radius:12px;background:#fde7a6}
 
 /* ---- Items ---- */
 .items{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px}
@@ -193,14 +163,12 @@ button:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
 </style>
 </head>
 <body>
-<main class="wrap" id="v-today"></main>
-<main class="wrap" id="v-items" hidden></main>
+<main class="wrap" id="v-items"></main>
 <main class="wrap" id="v-grind" hidden></main>
 <main class="wrap" id="v-s2" hidden></main>
 
 <nav class="tabs">
-  <button data-go="v-today" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Aujourd'hui</button>
-  <button data-go="v-items"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5A8.5 8.5 0 0 1 20.5 12H12z" fill="currentColor" stroke="none"/></svg>Items</button>
+  <button data-go="v-items" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5A8.5 8.5 0 0 1 20.5 12H12z" fill="currentColor" stroke="none"/></svg>Items</button>
   <button data-go="v-grind"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg>Grind</button>
   <button data-go="v-s2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg>Biopass S2</button>
 </nav>
@@ -239,64 +207,11 @@ const save=()=>store(KEY,st);
 const iget=(n,k)=>{const o=st.items[n];return o&&k in o?o[k]:ITEMS[n][k]};
 const iset=(n,k,v)=>{st.items[n]=st.items[n]||{};st.items[n][k]=v};
 
-// Tâches du planning
-const TASKS=[];
-PLANNING.forEach(([d,pages,anc,list])=>{
-  list.forEach(([num,x],i)=>TASKS.push({id:`${d}|${i}`,d,num,x:x||'',kind:'item'}));
-  TASKS.push({id:`${d}|anc`,d,kind:'anc',m:anc});
-});
-// Ancrages quotidiens après la fin du planning, jusqu'à la veille des partiels
-(()=>{const d=parse(PLAN_END);d.setDate(d.getDate()+1);const e=parse('2027-01-06');while(d<=e){const k=keyOf(d);TASKS.push({id:`${k}|anc`,d:k,kind:'anc',m:45});d.setDate(d.getDate()+1)}})();
-const isLecture=t=>t.kind==='item'&&!t.x;
-const tDone=t=>!!st.tasks[t.id];
-// Au premier lancement : les lectures déjà faites d'après le Google Sheet sont cochées
-if(!st.init){TASKS.forEach(t=>{if(t.d<todayKey()&&isLecture(t)&&ITEMS[t.num].l)st.tasks[t.id]=true});st.init=1;save()}
-
-const DAYS=(()=>{const a=[];const d=parse(PLANNING[0][0]),e=parse('2027-01-08');while(d<=e){a.push(keyOf(d));d.setDate(d.getDate()+1)}return a})();
-let sel=(()=>{const k=todayKey();return k<DAYS[0]?DAYS[0]:k>DAYS[DAYS.length-1]?DAYS[DAYS.length-1]:k})();
-const tasksOf=d=>TASKS.filter(t=>t.d===d);
-const planOf=d=>PLANNING.find(p=>p[0]===d);
-
-function taskHTML(t,showDate){
-  if(t.kind==='anc') return `<div class="task${tDone(t)?' on':''}" style="--c:var(--sun)" data-task="${t.id}" role="button" tabindex="0"><span class="ck">${CHECK}</span>
-     <span class="t"><span>Ancrages Hippocampus</span><small>${showDate?cap(fDay.format(parse(t.d)))+' · ':''}${t.m} min · relire les corrections</small></span></div>`;
-  const it=ITEMS[t.num], c=`var(--${it.m})`;
-  const what=t.x||'Lecture puis questions Hippocampus';
-  return `<div class="task${tDone(t)?' on':''}" style="--c:${c}" data-task="${t.id}" role="button" tabindex="0"><span class="ck">${CHECK}</span>
-    <span class="t"><span>${it.num} · ${it.t}</span><small>${showDate?cap(fDay.format(parse(t.d)))+' · ':''}${what}${it.p&&!t.x?' · '+it.p+' p.':''}</small></span>
-    <span class="chips2"><button class="tg${iget(it.num,'l')?' on':''}" style="--c:${c}" data-it="${it.num}|l">Lu</button><button class="tg${iget(it.num,'q')?' on':''}" style="--c:${c}" data-it="${it.num}|q">QCM</button></span></div>`;
-}
-
-function renderToday(){
-  const tk=todayKey(), ts=tasksOf(sel), done=ts.filter(tDone).length, p=planOf(sel), isT=sel===tk;
-  const late=TASKS.filter(t=>t.kind==='item'&&t.d<tk&&!tDone(t));
-  let h=`<header class="hd"><div><small>${fDay.format(parse(sel))}</small><h1>${isT?'Ma journée':sel<tk?'Journée passée':'À venir'}</h1></div>
-    <span class="pill">${EXAMS[sel]?'Partiels':p?p[1]+' pages':ts.length?'Ancrages':'Libre'}</span></header>
-   <div class="days" id="days">${DAYS.map(k=>{const t=tasksOf(k),n=t.filter(tDone).length,d=parse(k);
-     const cls=['dy',k===sel?'on':'',k===tk?'today':'',!t.length&&!EXAMS[k]?'off':'',t.length&&n===t.length?'done':n?'part':''].join(' ');
-     return `<button class="${cls}" data-day="${k}">${fWd.format(d).replace('.','')}<b>${d.getDate()}</b><i></i></button>`}).join('')}</div>`;
-  if(isT&&late.length){
-    h+=`<div class="late"><button class="lh" data-latetoggle>À rattraper : ${late.length} chapitre${late.length>1?'s':''}<span>${st.lateOpen?'Masquer':'Voir'}</span></button>
-      ${st.lateOpen?`<div class="lst">${late.map(t=>taskHTML(t,true)).join('')}</div><button class="all" data-lateall>Tout marquer comme fait</button>`:''}</div>`;
-  }
-  if(EXAMS[sel]) h+=`<div class="empty"><b>${EXAMS[sel]}</b>Neurologie, gynéco-obstétrique, endocrinologie et nutrition. Tu es prêt.</div>`;
-  else if(!ts.length) h+=`<div class="empty"><b>Journée libre</b>Rien au planning.</div>`;
-  else{
-    h+=`<div class="dayprog"><div class="bar"><i style="width:${done/ts.length*100}%"></i></div><span>${done} / ${ts.length}</span></div>`;
-    if(!p) h+=`<div class="empty" style="padding:14px"><b style="font-size:16px">Tout le programme est lu</b>Ancrages Hippocampus chaque jour jusqu'aux partiels.</div>`;
-    MATIERES.forEach(m=>{const g=ts.filter(t=>t.kind==='item'&&ITEMS[t.num].m===m.id);if(!g.length)return;
-      h+=`<div class="sec"><i style="background:var(--${m.id})"></i>${m.n}</div>`+g.map(t=>taskHTML(t)).join('')});
-    const a=ts.filter(t=>t.kind==='anc'); if(a.length) h+=`<div class="sec"><i style="background:var(--sun)"></i>Chaque jour</div>`+a.map(t=>taskHTML(t)).join('');
-  }
-  $('v-today').innerHTML=h;
-  const on=$('days').querySelector('.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest'});
-}
-
 let iFilter='all';
 function renderItems(){
   const all=Object.values(ITEMS), n=all.length;
   const L=all.filter(i=>iget(i.num,'l')).length, Q=all.filter(i=>iget(i.num,'q')).length;
-  const now=today(), jd=k=>Math.round((parse(k)-now)/864e5), jP=jd('2027-01-07'), jPlan=jd(PLAN_END);
+  const now=today(), jd=k=>Math.round((parse(k)-now)/864e5), jP=jd('2027-01-07');
   const stats=MATIERES.map(m=>{const its=all.filter(i=>i.m===m.id);return {m,its,l:its.filter(i=>iget(i.num,'l')).length,q:its.filter(i=>iget(i.num,'q')).length}});
   const ring=(c,r,p)=>{const C=2*Math.PI*r;return `<circle cx="52" cy="52" r="${r}" stroke="#e5eefb"/><circle cx="52" cy="52" r="${r}" stroke="var(--${c})" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}"/>`};
   let h=`<header class="hd"><div><small>Partiels les 7 et 8 janvier</small><h1>Mes items</h1></div><span class="pill">${jP>0?'J-'+jP:jP===0?'Jour J':'Fini'}</span></header>
@@ -308,7 +223,7 @@ function renderItems(){
    <div class="rings"><svg viewBox="0 0 104 104">${ring('neuro',46,(stats[0].l+stats[0].q)/(2*stats[0].its.length))}${ring('endoc',33,(stats[1].l+stats[1].q)/(2*stats[1].its.length))}${ring('gyn',20,(stats[2].l+stats[2].q)/(2*stats[2].its.length))}</svg>
     <div><div class="big">${Math.round((L+Q)/(2*n)*100)} %<small>du programme (lu + QCM)</small></div><div class="lg">
      ${stats.map(x=>`<span><i style="background:var(--${x.m.id})"></i>${x.m.n.split(' ')[0]} · ${Math.round((x.l+x.q)/(2*x.its.length)*100)} %</span>`).join('')}</div></div></div>
-   <div class="cnt"><div><b>${jPlan>0?'J-'+jPlan:'Fini'}</b><span>fin du planning (6 déc)</span></div><div><b>${n-Q}</b><span>items sans questions Hippocampus</span></div></div>
+   <div class="cnt"><div><b>${n-L}</b><span>items encore à lire</span></div><div><b>${n-Q}</b><span>items sans questions Hippocampus</span></div></div>
    <div class="filt"><button class="${iFilter==='all'?'on':''}" data-filt="all">Tous</button><button class="${iFilter==='todo'?'on':''}" data-filt="todo">À finir</button><button class="${iFilter==='done'?'on':''}" data-filt="done">Terminés</button></div>`;
   MATIERES.forEach(m=>{
     const x=stats.find(s=>s.m===m);
@@ -380,9 +295,9 @@ function renderS2(){
 }
 
 /* =================== Navigation & clics =================== */
-const R={'v-today':renderToday,'v-items':renderItems,'v-grind':renderGrind,'v-s2':renderS2};
-let view='v-today'; try{view=localStorage.getItem('ilyes.view')||view}catch(e){}
-if(!R[view])view='v-today';
+const R={'v-items':renderItems,'v-grind':renderGrind,'v-s2':renderS2};
+let view='v-items'; try{view=localStorage.getItem('ilyes.view')||view}catch(e){}
+if(!R[view])view='v-items';
 function show(v,keep){view=v;document.querySelectorAll('main.wrap').forEach(m=>m.hidden=m.id!==v);
   document.querySelectorAll('[data-go]').forEach(b=>b.classList.toggle('on',b.dataset.go===v));
   try{localStorage.setItem('ilyes.view',v)}catch(e){}
@@ -393,14 +308,6 @@ document.addEventListener('click',e=>{
   const tg=e.target.closest('[data-it]');
   if(tg){e.stopPropagation();const [n,k]=tg.dataset.it.split('|');const v=!iget(+n,k);iset(+n,k,v);save();
     if(v){buzz();burst(tg,COL[ITEMS[n].m])}R[view]();return}
-  const tk=e.target.closest('[data-task]');
-  if(tk){const t=TASKS.find(x=>x.id===tk.dataset.task);const v=!tDone(t);
-    if(v)st.tasks[t.id]=true;else delete st.tasks[t.id];
-    if(v&&isLecture(t)){iset(t.num,'l',true);iset(t.num,'q',true)}
-    save();if(v){buzz();burst(tk.querySelector('.ck'),t.kind==='anc'?'#f5b83d':COL[ITEMS[t.num].m])}renderToday();return}
-  const dy=e.target.closest('[data-day]'); if(dy){sel=dy.dataset.day;renderToday();return}
-  if(e.target.closest('[data-latetoggle]')){st.lateOpen=!st.lateOpen;save();renderToday();return}
-  if(e.target.closest('[data-lateall]')){TASKS.filter(t=>t.kind==='item'&&t.d<todayKey()&&!tDone(t)).forEach(t=>{st.tasks[t.id]=true;if(isLecture(t)){iset(t.num,'l',true);iset(t.num,'q',true)}});st.lateOpen=false;save();buzz();renderToday();return}
   const fl=e.target.closest('[data-filt]'); if(fl){iFilter=fl.dataset.filt;renderItems();return}
   // Grind
   const g=e.target.closest('[data-g]');
@@ -415,10 +322,9 @@ document.addEventListener('click',e=>{
     const nv=!s2get(k,def);if(nv===def)delete s2[k];else s2[k]=nv;store(S2KEY,s2);renderS2();
     if(nv){buzz();burst(document.querySelector(`[data-s2="${k}"]`),t==='f'?COL.f:COL.a)}return}
 });
-document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-task]')){e.preventDefault();e.target.click()}});
 
 let lastDay=todayKey();
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&todayKey()!==lastDay){lastDay=todayKey();sel=lastDay<DAYS[0]?DAYS[0]:lastDay;gsel=today();gview=today();gview.setDate(1);show(view,true)}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&todayKey()!==lastDay){lastDay=todayKey();gsel=today();gview=today();gview.setDate(1);show(view,true)}});
 
 show(view);
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
