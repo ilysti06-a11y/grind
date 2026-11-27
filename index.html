@@ -119,9 +119,9 @@ button:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 .r2 .nm{font-size:14px;font-weight:500;min-width:0}
 .r2 .nm small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px}
 .r2 .cell{display:flex;justify-content:center;gap:5px}
-.r2.grp{grid-template-columns:1fr;gap:4px}
-.r2.grp .sub{display:grid;grid-template-columns:1fr 64px 64px;align-items:center;padding:6px 0 0 12px;border-left:2px solid var(--line);margin-left:2px}
-.r2.grp .sub .nm{font-size:13px;color:var(--muted)}
+.r2.many .cell{grid-column:1 / -1;justify-content:flex-start;align-items:center;gap:8px;margin-top:8px}
+.r2 .cell .lb{display:none;width:40px;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.r2.many .cell .lb{display:block}
 .cb{--c:var(--fiche);width:30px;height:30px;border-radius:50%;border:2px solid color-mix(in srgb,var(--c) 55%,transparent);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--muted);transition:all .35s cubic-bezier(.34,1.56,.64,1)}
 .cb.sm{width:25px;height:25px}
 .cb svg{width:14px;height:14px;stroke:#04060c;opacity:0;transition:opacity .2s}
@@ -364,15 +364,14 @@ function s2render(){
       <div class="cols"><span style="text-align:left">Chapitre</span><span>Fiche</span><span>ACC</span></div>`);
     const box=document.createElement('div'); box.className='rows2';
     s.items.forEach(it=>{
-      const n=it.f.length;
-      const btn=(t,i,on,c)=>`<button class="cb${on?' on':''}" style="--c:var(--${c})" data-key="${t}:${it.id}:${i}" aria-pressed="${on}" aria-label="${t==='f'?'Fiche':'ACC'} ${it.n}${n>1?' partie '+(i+1):''}">${CHECK}</button>`;
-      const cells=i=>`<div class="cell">${btn('f',i,s2get(`f:${it.id}:${i}`,it.f[i]),'fiche')}</div><div class="cell">${btn('a',i,s2get(`a:${it.id}:${i}`,false),'acc')}</div>`;
-      if(n===1){
-        box.insertAdjacentHTML('beforeend',`<div class="r2"><div class="nm">${it.n}${it.g?`<small>${it.g}</small>`:''}</div>${cells(0)}</div>`);
-      }else{
-        const subs=it.f.map((d,i)=>`<div class="sub"><div class="nm">Partie ${i+1}/${n}</div>${cells(i)}</div>`).join('');
-        box.insertAdjacentHTML('beforeend',`<div class="r2 grp"><div class="nm">${it.n}<small>${n} parties</small></div>${subs}</div>`);
-      }
+      const multi=it.f.length>1;
+      const fcells=it.f.map((d,i)=>{const on=s2get(`f:${it.id}:${i}`,d);
+        return `<button class="cb${multi?' sm':''}${on?' on':''}" style="--c:var(--fiche)" data-key="f:${it.id}:${i}" aria-pressed="${on}" aria-label="Fiche ${it.n}${multi?' partie '+(i+1):''}">${multi?(i+1):''}${CHECK}</button>`}).join('');
+      const acells=it.f.map((d,i)=>{const on=s2get(`a:${it.id}:${i}`,false);
+        return `<button class="cb${multi?' sm':''}${on?' on':''}" style="--c:var(--acc)" data-key="a:${it.id}:${i}" aria-pressed="${on}" aria-label="ACC ${it.n}${multi?' partie '+(i+1):''}">${multi?(i+1):''}${CHECK}</button>`}).join('');
+      box.insertAdjacentHTML('beforeend',`<div class="r2${it.f.length>2?' many':''}"><div class="nm">${it.n}${it.g||it.h?`<small>${it.g||it.h}</small>`:''}</div>
+        <div class="cell"><span class="lb">Fiche</span>${fcells}</div>
+        <div class="cell"><span class="lb">ACC</span>${acells}</div></div>`);
     });
     L.appendChild(box);
   });
