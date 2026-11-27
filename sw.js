@@ -1,5 +1,5 @@
 // Cache simple pour que l'appli s'ouvre même sans réseau.
-const CACHE = 'grind-v2';
+const CACHE = 'grind-v3';
 const FILES = ['./', './index.html', './manifest.json', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {

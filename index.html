@@ -20,14 +20,16 @@
   --bg:#03050a; --cell:#0b1122; --cell2:#0e1630; --line:#1b2742;
   --fg:#e8eefc; --muted:#7f8db0;
   --muscu:#2f5ed8; --cardio:#a3274a; --revi:#e6e8ee; --gold:#ffc857;
+  --fiche:#2f5ed8; --acc:#d4a63c;
   --display:"Sora","Inter",system-ui,sans-serif;
   --body:"Inter",system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
 html,body{margin:0;min-height:100%;background:var(--bg)}
 body{color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased;
   background:radial-gradient(700px 420px at 50% -120px,#0e1c3d 0%,transparent 70%) var(--bg) no-repeat;
-  padding:calc(env(safe-area-inset-top,0px) + 18px) max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 22px) max(18px,env(safe-area-inset-left,0px));
+  padding:calc(env(safe-area-inset-top,0px) + 18px) max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 96px) max(18px,env(safe-area-inset-left,0px));
   user-select:none;-webkit-user-select:none;overscroll-behavior:none}
 .app{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
@@ -89,13 +91,50 @@ button:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 .stat b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
 .stat span{font-size:10.5px;color:var(--muted)}
 
+/* ---- Onglets ---- */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;gap:8px;
+  padding:8px max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 8px) max(18px,env(safe-area-inset-left,0px));
+  background:rgba(3,5,10,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+.tab{flex:1;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--muted);padding:4px 0;border-radius:12px;transition:color .2s}
+.tab svg{width:24px;height:24px}
+.tab.on{color:var(--fg)}
+.tab.on svg{color:var(--fiche)}
+
+/* ---- S2 Biopass ---- */
+.ov{background:var(--cell);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ovhead{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600}
+.ovhead span{display:flex;align-items:center;gap:8px}
+.ovhead i{width:9px;height:9px;border-radius:50%;display:block}
+.ovhead b{font-family:var(--display);font-size:15px;font-variant-numeric:tabular-nums}
+.bubs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+.bub{--c:var(--fiche);width:15px;height:15px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--c) 45%,transparent);transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.bub.on{background:var(--c);border-color:var(--c);box-shadow:0 0 9px var(--c)}
+.subj{display:flex;justify-content:space-between;align-items:baseline;margin:22px 2px 10px}
+.subj h3{margin:0;font-family:var(--display);font-size:17px}
+.subj span{font-size:11.5px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:1fr 64px 52px;padding:0 12px 6px;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.cols span{text-align:center}
+.rows2{display:flex;flex-direction:column;gap:7px}
+.r2{display:grid;grid-template-columns:1fr 64px 52px;align-items:center;background:var(--cell);border-radius:14px;padding:10px 12px;min-height:50px}
+.r2 .nm{font-size:14px;font-weight:500;min-width:0}
+.r2 .nm small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px}
+.r2 .cell{display:flex;justify-content:center;gap:5px}
+.cb{--c:var(--fiche);width:30px;height:30px;border-radius:50%;border:2px solid color-mix(in srgb,var(--c) 55%,transparent);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--muted);transition:all .35s cubic-bezier(.34,1.56,.64,1)}
+.cb.sm{width:25px;height:25px}
+.cb svg{width:14px;height:14px;stroke:#04060c;opacity:0;transition:opacity .2s}
+.cb.on{background:var(--c);border-color:var(--c);box-shadow:0 0 12px var(--c);color:#04060c}
+.cb.on svg{opacity:1}
+.cb.sm.on svg{display:none}
+.cb:active{transform:scale(.88)}
+.note{font-size:11.5px;color:var(--muted);text-align:center;margin:18px 0 0;line-height:1.5}
+
 .pop{position:fixed;border-radius:50%;pointer-events:none;z-index:50;animation:fly .9s cubic-bezier(.2,.8,.3,1) forwards}
 @keyframes fly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
 @media (prefers-reduced-motion:reduce){.pop{display:none}*{transition:none!important}}
 </style>
 </head>
 <body>
-<main class="app">
+<main class="app" id="view-disc">
   <div class="top">
     <div class="brand"><small id="todayLabel"></small>Grind</div>
     <div class="streak" title="Jours d'affilée avec au moins une validation"><b id="streak">0</b><span>jours<br>d'affilée</span></div>
@@ -127,6 +166,27 @@ button:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
     <div class="stat"><b id="sR" style="color:var(--revi)">0</b><span>révisions OK</span></div>
   </div>
 </main>
+
+<main class="app" id="view-s2" hidden>
+  <div class="top">
+    <div class="brand"><small>Progression</small>S2 Biopass</div>
+    <div class="streak"><b id="s2pct" style="color:var(--fg)">0%</b><span>du travail<br>terminé</span></div>
+  </div>
+
+  <div class="ov">
+    <div class="ovhead"><span><i style="background:var(--fiche)"></i>Fiches de cours</span><b id="ovF">0 / 0</b></div>
+    <div class="bubs" id="bubF"></div>
+    <div class="ovhead"><span><i style="background:var(--acc)"></i>ACC</span><b id="ovA">0 / 0</b></div>
+    <div class="bubs" id="bubA"></div>
+  </div>
+
+  <div id="s2list"></div>
+</main>
+
+<nav class="tabbar">
+  <button class="tab on" data-view="view-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Discipline</button>
+  <button class="tab" data-view="view-s2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg>S2 Biopass</button>
+</nav>
 
 <script>
 const KEY='grind.v1', KINDS=['m','c','r'], COLORS={m:"#2f5ed8",c:"#a3274a",r:"#e6e8ee"};
@@ -231,6 +291,118 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
+/* ================= S2 Biopass ================= */
+// f = parties de fiche : true = déjà faite proprement sur tablette, false = à refaire
+const S2=[
+  {subj:'Biophysique', items:[
+    {id:'oem',   n:'OEM et propagation de la lumière', g:'Optique géométrique', f:[false]},
+    {id:'mir',   n:'Miroirs',              g:'Optique géométrique', f:[false]},
+    {id:'diop',  n:'Dioptres',             g:'Optique géométrique', f:[false]},
+    {id:'lent',  n:'Lentilles',            g:'Optique géométrique', f:[true]},
+    {id:'instr', n:'Instruments optiques', g:'Optique géométrique', f:[true]},
+    {id:'ondu',  n:'Optique ondulatoire',  f:[true]},
+    {id:'spec',  n:'Spectroscopie optique',f:[true]},
+    {id:'rmn',   n:'RMN',                  f:[true]},
+    {id:'huglo', n:'Radioactivité Huglo',  f:[true]},
+    {id:'semah', n:'Radioactivité Semah',  f:[true]},
+  ]},
+  {subj:'Biostatistiques', items:[
+    {id:'proba', n:'Probabilités',          f:[true]},
+    {id:'va',    n:'Variables aléatoires',  f:[false]},
+    {id:'desc',  n:'Analyses descriptives', f:[false]},
+    {id:'ic',    n:'Estimation IC',         f:[false]},
+    {id:'gtest', n:'Généralités sur les tests paramétriques', f:[true]},
+    {id:'ot',    n:'Observé / Théorique',   f:[false]},
+    {id:'oo',    n:'Observé / Observé',     f:[false]},
+    {id:'khi2',  n:'Khi2',                  f:[true]},
+    {id:'appar', n:'Tests en séries appariées', f:[false]},
+    {id:'correl',n:'Corrélation-Régression',f:[true]},
+    {id:'diag',  n:'Tests diagnostiques',   f:[true]},
+    {id:'conc',  n:'Concordance', h:'2 parties', f:[false,true]},
+    {id:'surv',  n:'Survie',                f:[false]},
+    {id:'epid',  n:'Épidémiologie',         f:[false]},
+  ]},
+];
+const S2KEY='grind.s2.v1';
+let s2={};
+try{s2=JSON.parse(localStorage.getItem(S2KEY))||{}}catch(e){s2={}}
+const s2save=()=>{try{localStorage.setItem(S2KEY,JSON.stringify(s2))}catch(e){}};
+// Clés : "f:<id>:<partie>" et "a:<id>". Valeur par défaut : f -> état tablette, a -> false
+const s2get=(k,def)=>k in s2?s2[k]:def;
+const CHECK='<svg viewBox="0 0 16 16" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8.5 3 3 6-7"/></svg>';
+const FC='#2f5ed8', AC='#d4a63c';
+
+function s2tasks(){
+  const F=[],A=[];
+  S2.forEach(s=>s.items.forEach(it=>{
+    it.f.forEach((d,i)=>F.push(s2get(`f:${it.id}:${i}`,d)));
+    A.push(s2get(`a:${it.id}`,false));
+  }));
+  return {F,A};
+}
+
+function s2renderOverview(){
+  const {F,A}=s2tasks(), fd=F.filter(Boolean).length, ad=A.filter(Boolean).length;
+  $('ovF').textContent=`${fd} / ${F.length}`;
+  $('ovA').textContent=`${ad} / ${A.length}`;
+  $('bubF').innerHTML=F.map(x=>`<span class="bub${x?' on':''}" style="--c:var(--fiche)"></span>`).join('');
+  $('bubA').innerHTML=A.map(x=>`<span class="bub${x?' on':''}" style="--c:var(--acc)"></span>`).join('');
+  $('s2pct').textContent=Math.round((fd+ad)/(F.length+A.length)*100)+'%';
+}
+
+function s2render(){
+  const L=$('s2list'); L.innerHTML='';
+  S2.forEach(s=>{
+    let fT=0,fD=0,aD=0;
+    s.items.forEach(it=>{it.f.forEach((d,i)=>{fT++;if(s2get(`f:${it.id}:${i}`,d))fD++});if(s2get(`a:${it.id}`,false))aD++});
+    L.insertAdjacentHTML('beforeend',`<div class="subj"><h3>${s.subj}</h3><span>Fiches ${fD}/${fT} · ACC ${aD}/${s.items.length}</span></div>
+      <div class="cols"><span style="text-align:left">Chapitre</span><span>Fiche</span><span>ACC</span></div>`);
+    const box=document.createElement('div'); box.className='rows2';
+    s.items.forEach(it=>{
+      const multi=it.f.length>1;
+      const fcells=it.f.map((d,i)=>{const on=s2get(`f:${it.id}:${i}`,d);
+        return `<button class="cb${multi?' sm':''}${on?' on':''}" style="--c:var(--fiche)" data-key="f:${it.id}:${i}" aria-pressed="${on}" aria-label="Fiche ${it.n}${multi?' partie '+(i+1):''}">${multi?(i+1):''}${CHECK}</button>`}).join('');
+      const aon=s2get(`a:${it.id}`,false);
+      box.insertAdjacentHTML('beforeend',`<div class="r2"><div class="nm">${it.n}${it.g||it.h?`<small>${it.g||it.h}</small>`:''}</div>
+        <div class="cell">${fcells}</div>
+        <div class="cell"><button class="cb${aon?' on':''}" style="--c:var(--acc)" data-key="a:${it.id}" aria-pressed="${aon}" aria-label="ACC ${it.n}">${CHECK}</button></div></div>`);
+    });
+    L.appendChild(box);
+  });
+  L.insertAdjacentHTML('beforeend','<p class="note">Bleu : fiche refaite proprement sur tablette.<br>Or : ACC refaites avec les annales de l\'an dernier.</p>');
+  s2renderOverview();
+}
+
+$('s2list').addEventListener('click',e=>{
+  const b=e.target.closest('.cb'); if(!b) return;
+  const k=b.dataset.key, [t,id,p]=k.split(':');
+  let def=false;
+  if(t==='f'){S2.forEach(s=>s.items.forEach(it=>{if(it.id===id) def=it.f[+p]}))}
+  const nv=!s2get(k,def);
+  if(nv===def) delete s2[k]; else s2[k]=nv;
+  s2save();
+  b.classList.toggle('on',nv); b.setAttribute('aria-pressed',nv);
+  s2render();
+  if(nv){
+    if(navigator.vibrate) navigator.vibrate(12);
+    burst(document.querySelector(`.cb[data-key="${k}"]`), t==='f'?FC:AC);
+  }
+});
+
+/* Onglets */
+const VKEY='grind.view';
+function showView(v){
+  document.querySelectorAll('main.app').forEach(m=>m.hidden=m.id!==v);
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
+  try{localStorage.setItem(VKEY,v)}catch(e){}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showView(t.dataset.view));
+let startView='view-disc'; try{startView=localStorage.getItem(VKEY)||startView}catch(e){}
+if(!document.getElementById(startView)) startView='view-disc';
+
+s2render();
+showView(startView);
 render();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
