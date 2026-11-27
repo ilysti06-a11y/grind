@@ -220,9 +220,9 @@ function renderItems(){
     ${stats.map(x=>`<div class="it" style="--c:var(--${x.m.id})"><div class="ith"><span>${x.m.n}</span><b>${x.l}<small> lus · </small>${x.q}<small> QCM / ${x.its.length}</small></b></div>
       <div class="itb">${x.its.map(i=>{const a=iget(i.num,'l'),b=iget(i.num,'q');return `<i class="${a&&b?'on':a||b?'half':''}"></i>`}).join('')}</div></div>`).join('')}
     <span class="hint" style="text-align:left;margin:0">Bulle pleine : lu et questions faites. À moitié : l'un des deux.</span></section>
-   <div class="rings"><svg viewBox="0 0 104 104">${ring('neuro',46,stats[0].q/stats[0].its.length)}${ring('endoc',33,stats[1].q/stats[1].its.length)}${ring('gyn',20,stats[2].q/stats[2].its.length)}</svg>
+   <div class="rings"><svg viewBox="0 0 104 104">${ring('neuro',46,stats[0].q/stats[0].its.length)}${ring('gyn',33,stats[2].q/stats[2].its.length)}${ring('endoc',20,stats[1].q/stats[1].its.length)}</svg>
     <div><div class="big">${Math.round(Q/n*100)} %<small>des items validés (QCM faits)</small></div><div class="lg">
-     ${stats.map(x=>`<span><i style="background:var(--${x.m.id})"></i>${x.m.n.split(' ')[0]} · ${x.q}/${x.its.length}</span>`).join('')}</div></div></div>
+     ${[0,2,1].map(i=>stats[i]).map(x=>`<span><i style="background:var(--${x.m.id})"></i>${x.m.n.split(' ')[0]} · ${x.q}/${x.its.length}</span>`).join('')}</div></div></div>
    <div class="cnt"><div><b>${n-L}</b><span>items encore à lire</span></div><div><b>${n-Q}</b><span>items sans questions Hippocampus</span></div></div>
    <div class="filt"><button class="${iFilter==='all'?'on':''}" data-filt="all">Tous</button><button class="${iFilter==='todo'?'on':''}" data-filt="todo">À finir</button><button class="${iFilter==='done'?'on':''}" data-filt="done">Terminés</button></div>`;
   MATIERES.forEach(m=>{

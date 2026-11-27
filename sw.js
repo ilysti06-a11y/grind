@@ -1,5 +1,5 @@
 // Cache simple pour que l'appli s'ouvre même sans réseau.
-const CACHE = 'ilyes-v3';
+const CACHE = 'ilyes-v4';
 const FILES = ['./', './index.html', './data.js', './manifest.json', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {
