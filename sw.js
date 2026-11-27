@@ -1,6 +1,6 @@
 // Cache simple pour que l'appli s'ouvre même sans réseau.
-const CACHE = 'grind-v7';
-const FILES = ['./', './index.html', './manifest.json', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE = 'ilyes-v1';
+const FILES = ['./', './index.html', './data.js', './manifest.json', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
